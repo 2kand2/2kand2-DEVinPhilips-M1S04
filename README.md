@@ -8,7 +8,7 @@ A aplicação consiste em operações bancárias, onde pode efetuar o cadastro d
 
 ## Layout web
 
-![Web 1](https://github.com/2kand2/2kand2-DEVinPhilips-M1S04/assets/page-web.pen)
+![Web 1](https://github.com/2kand2/2kand2-DEVinPhilips-M1S04/blob/main/assets/page-web.png)
 
 ## Front end
 
