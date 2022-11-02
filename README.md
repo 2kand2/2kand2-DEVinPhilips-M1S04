@@ -1,8 +1,8 @@
-# DEvin bank
+# Philips bank
 
 # Sobre o projeto
 
-Devin Bank é uma aplicação apenas front-end web construída durante a semana 4 do DEvinhouse turma Philips.
+Philips Bank é uma aplicação apenas front-end web construída durante a semana 4 do DEvinhouse turma Philips.
 
 A aplicação consiste em operações bancárias, onde pode efetuar o cadastro do cliente, depósitos, saques e consultas sobre o seu saldo.
 
