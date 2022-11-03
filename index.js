@@ -1,12 +1,20 @@
 const clients = [];
 const register = document.getElementById("register");
+const deposit = document.getElementById("deposit");
+const withdrawal = document.getElementById("withdrawal");
+const checkBalance = document.getElementById("checkBalance");
 const operations = document.querySelector(".card-operation");
-
 let operationRow = 0;
+let operationType = "";
 
+console.log(register, deposit, withdrawal, checkBalance);
 register.addEventListener("click", createRegisterClients);
+deposit.addEventListener("click", createDeposit);
+withdrawal.addEventListener("click", createWithdrawal);
+checkBalance.addEventListener("click", createCheckBalance);
 
 function createRegisterClients() {
+  removeOperacaoAnterior();
   if (operationRow == 0) {
     const form = constructForm("formRegister", "registerClient(event)");
     // form.setAttribute("onsubmit", "registerClient(event)");
@@ -22,7 +30,9 @@ function createRegisterClients() {
 
     const phoneLabel = createLabel("Celular:", "phone");
     const phoneInput = createInput("phone", "phone", "tel");
-    phoneInput.setAttribute("minlength", "10");
+
+    phoneInput.setAttribute("minlength", "11");
+
     const passwordLabel = createLabel("Senha", "password");
     const passwordInput = createInput("password", "password", "password");
 
@@ -50,11 +60,87 @@ function createRegisterClients() {
     );
 
     operations.appendChild(form);
+    operationType = form.getAttribute("id");
+    operationRow++;
+  }
+}
+function createWithdrawal() {
+  removeOperacaoAnterior();
+  if (operationRow == 0) {
+    const form = constructForm("formWithdrawal");
 
+    const saqueLabel = createLabel("Saque: ");
+
+    const valueWithdrawalLabel = createLabel("Valor do saque:", "valueWithdrawal");
+    const valueWithdrawalInput = createInput("valueWithdrawal", "valueWithdrawal", "number");
+    valueWithdrawalInput.setAttribute("min", "1");
+
+    const accountLabel = createLabel("Conta do Saque:", "account");
+    const accountInput = createInput("account", "account", "number");
+
+    const passwordLabel = createLabel("Senha:", "password");
+    const passwordInput = createInput("password", "password", "password");
+
+    const drawaltBtn = document.createElement("button");
+    drawaltBtn.id = "withdrawalBtn";
+    drawaltBtn.type = "submit";
+    drawaltBtn.innerText = "Sacar";
+
+    form.append(saqueLabel, valueWithdrawalLabel, valueWithdrawalInput, accountLabel, accountInput, passwordLabel, passwordInput, drawaltBtn);
+    operations.appendChild(form);
+    operationType = form.getAttribute("id");
+    operationRow++;
+  }
+}
+function createDeposit() {
+  removeOperacaoAnterior();
+  if (operationRow == 0) {
+    const form = constructForm("formDeposit");
+    const depositLabel = createLabel("Depósito");
+
+    const valueDepositLabel = createLabel("Valor do depósito:", "valueDeposit");
+    const valueDepositInput = createInput("valueDeposit", "valueDeposit", "number");
+    valueDepositInput.setAttribute("min", "1");
+
+    const accountLabel = createLabel("Conta do depósito:", "account");
+    const accountInput = createInput("account", "account", "number");
+
+    const passwordLabel = createLabel("Senha:", "password");
+    const passwordInput = createInput("password", "password", "password");
+
+    const depositBtn = document.createElement("button");
+    depositBtn.id = "depositBtn";
+    depositBtn.type = "submit";
+    depositBtn.innerText = "Depositar";
+
+    form.append(depositLabel, valueDepositLabel, valueDepositInput, accountLabel, accountInput, passwordLabel, passwordInput, depositBtn);
+    operations.append(form);
+    operationType = form.getAttribute("id");
     operationRow++;
   }
 }
 
+function createCheckBalance() {
+  removeOperacaoAnterior();
+  if (operationRow == 0) {
+    const form = constructForm("formCheckBalance");
+
+    const consultarSaldoLabel = createLabel("Consultar Saldo: ");
+
+    const accountLabel = createLabel("Conta: ", "account");
+    const accountInput = createInput("account", "account", "number");
+
+    const checkBalanceBtn = document.createElement("button");
+    checkBalanceBtn.id = "checkBalanceBtn";
+    checkBalanceBtn.type = "submit";
+    checkBalanceBtn.innerText = "Consultar";
+
+    form.append(consultarSaldoLabel, accountLabel, accountInput, checkBalanceBtn);
+    operations.appendChild(form);
+    operationType = form.getAttribute("id");
+    operationRow++;
+  }
+}
 function registerClient(event) {
   event.preventDefault();
 
@@ -89,7 +175,7 @@ function gerarConta() {
     let numeroaleatorio;
     do {
       numeroRepetido = false;
-      numeroaleatorio = Math.floor(Math.random() * 10);
+      numeroaleatorio = Math.floor(1000 + Math.random() * 90000);
       clients.forEach((element) => {
         if (element.account == numeroaleatorio) {
           numeroRepetido = true;
@@ -125,4 +211,12 @@ function createInput(id, name, type = "text") {
     input.setAttribute("min", "1");
   }
   return input;
+}
+function removeOperacaoAnterior() {
+  if (operationType !== "") {
+    const elementoParaRemover = document.querySelector("#" + operationType);
+    elementoParaRemover.remove();
+    operationRow--;
+    operationType = "";
+  }
 }

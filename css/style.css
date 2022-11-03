@@ -46,6 +46,9 @@
   text-align: center;
 }
 .banking-operations-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
   margin-top: 20px;
 }
 .banking-operations-list button {
@@ -54,6 +57,10 @@
   color: blue;
   background: #fff;
   border-radius: 20px;
+  transition: 0.5s;
+}
+.banking-operations-list button:hover {
+  background: rgb(213, 211, 226);
 }
 .card-operation {
   width: 400px;
