@@ -67,7 +67,7 @@ function createRegisterClients() {
 function createWithdrawal() {
   removeOperacaoAnterior();
   if (operationRow == 0) {
-    const form = constructForm("formWithdrawal");
+    const form = constructForm("formWithdrawal", "withdrawalValue(event)");
 
     const saqueLabel = createLabel("Saque: ");
 
@@ -95,7 +95,7 @@ function createWithdrawal() {
 function createDeposit() {
   removeOperacaoAnterior();
   if (operationRow == 0) {
-    const form = constructForm("formDeposit");
+    const form = constructForm("formDeposit", "depositValue(event)");
     const depositLabel = createLabel("Depósito");
 
     const valueDepositLabel = createLabel("Valor do depósito:", "valueDeposit");
@@ -119,11 +119,10 @@ function createDeposit() {
     operationRow++;
   }
 }
-
 function createCheckBalance() {
   removeOperacaoAnterior();
   if (operationRow == 0) {
-    const form = constructForm("formCheckBalance");
+    const form = constructForm("formCheckBalance", "checkBalanceAccount(event)");
 
     const consultarSaldoLabel = createLabel("Consultar Saldo: ");
 
@@ -141,6 +140,7 @@ function createCheckBalance() {
     operationRow++;
   }
 }
+
 function registerClient(event) {
   event.preventDefault();
 
@@ -166,7 +166,70 @@ function registerClient(event) {
     confirmPassword.value = "";
   }
 }
+function withdrawalValue(event) {
+  event.preventDefault();
 
+  const valueWithdrawal = document.getElementById("valueWithdrawal");
+  const account = document.getElementById("account");
+  const password = document.getElementById("password");
+
+  const confirmAccount = verificaConta(account.value);
+  const confirmPassword = verificaSenha(password.value);
+
+  if (confirmAccount && confirmPassword) {
+    const accountIndex = retornaIndexAccount(account.value);
+    let accountSelect = clients[accountIndex];
+    if (accountSelect.balance >= parseFloat(valueWithdrawal.value)) {
+      accountSelect.balance -= parseFloat(valueWithdrawal.value);
+      alert("Saque efetuado com sucesso!");
+      valueWithdrawal.value = "";
+      account.value = "";
+      password.value = "";
+    } else {
+      alert("Saldo insuficiente para realizar operação!");
+    }
+  } else {
+    alert("Senha ou conta incorreta!");
+  }
+}
+function depositValue(event) {
+  event.preventDefault();
+
+  const valueDeposit = document.getElementById("valueDeposit");
+  const account = document.getElementById("account");
+  const password = document.getElementById("password");
+  // valueDeposit.value, account.value, password.value
+
+  const confirmAccount = verificaConta(account.value);
+  const confirmPassword = verificaSenha(password.value);
+
+  if (confirmAccount && confirmPassword) {
+    const accountIndex = retornaIndexAccount(account.value);
+    clients[accountIndex].balance += parseFloat(valueDeposit.value);
+    alert(`Deposito de ${valueDeposit.value} realizado com sucesso`);
+    valueDeposit.value = "";
+    account.value = "";
+    password.value = "";
+  } else {
+    alert("Conta ou senha inválida");
+  }
+}
+function checkBalanceAccount(event) {
+  event.preventDefault();
+
+  const account = document.getElementById("account");
+
+  const contaVerificada = verificaConta(account.value);
+
+  if (contaVerificada) {
+    const accountIndex = retornaIndexAccount(account.value);
+    const accountSelect = clients[accountIndex];
+    alert("Saldo atual: " + accountSelect.balance);
+    account.value = "";
+  } else {
+    alert("Conta não encontrada!");
+  }
+}
 function gerarConta() {
   if (clients.length < 1) {
     return Math.floor(1000 + Math.random() * 90000);
@@ -219,4 +282,27 @@ function removeOperacaoAnterior() {
     operationRow--;
     operationType = "";
   }
+}
+function verificaConta(conta) {
+  return clients.reduce((acumulador, item) => {
+    if (conta == item.account) {
+      acumulador += "true";
+      return acumulador;
+    }
+  }, "");
+}
+function verificaSenha(conta) {
+  return clients.reduce((acumulador, item) => {
+    if (conta == item.password) {
+      acumulador += "true";
+      return acumulador;
+    }
+  }, "");
+}
+function retornaIndexAccount(conta) {
+  return clients.reduce((valor, item, arr) => {
+    if (conta == item.account) {
+      return arr;
+    }
+  }, "");
 }
