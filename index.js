@@ -7,7 +7,6 @@ const operations = document.querySelector(".card-operation");
 let operationRow = 0;
 let operationType = "";
 
-console.log(register, deposit, withdrawal, checkBalance);
 register.addEventListener("click", createRegisterClients);
 deposit.addEventListener("click", createDeposit);
 withdrawal.addEventListener("click", createWithdrawal);
@@ -17,7 +16,6 @@ function createRegisterClients() {
   removeOperacaoAnterior();
   if (operationRow == 0) {
     const form = constructForm("formRegister", "registerClient(event)");
-    // form.setAttribute("onsubmit", "registerClient(event)");
 
     const titleRegisterForm = createLabel("Cadastro de cliente:");
 
@@ -178,12 +176,12 @@ function withdrawalValue(event) {
     let accountSelect = clients[accountIndex];
     if (accountSelect.balance >= parseFloat(valueWithdrawal.value)) {
       accountSelect.balance -= parseFloat(valueWithdrawal.value);
-      alert("Saque efetuado com sucesso!");
+      alert(`Saque efetuado com sucesso!\nSaldo da conta: ${accountSelect.balance} `);
       valueWithdrawal.value = "";
       account.value = "";
       password.value = "";
     } else {
-      alert("Saldo insuficiente para realizar operação!");
+      alert(`Não foi possível realizar o saque\nSaldo da conta: ${accountSelect.balance}`);
     }
   } else {
     alert("Senha ou conta incorreta!");
@@ -194,12 +192,8 @@ function depositValue(event) {
 
   const valueDeposit = document.getElementById("valueDeposit");
   const account = document.getElementById("account");
-  // const password = document.getElementById("password");
-  // valueDeposit.value, account.value, password.value
 
   const confirmAccount = verificaConta(account.value);
-  // const confirmPassword = verificaSenha(password.value);
-
   if (confirmAccount) {
     const accountIndex = retornaIndexAccount(account.value);
     clients[accountIndex].balance += parseFloat(valueDeposit.value);
