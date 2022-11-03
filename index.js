@@ -105,15 +105,12 @@ function createDeposit() {
     const accountLabel = createLabel("Conta do depósito:", "account");
     const accountInput = createInput("account", "account", "number");
 
-    const passwordLabel = createLabel("Senha:", "password");
-    const passwordInput = createInput("password", "password", "password");
-
     const depositBtn = document.createElement("button");
     depositBtn.id = "depositBtn";
     depositBtn.type = "submit";
     depositBtn.innerText = "Depositar";
 
-    form.append(depositLabel, valueDepositLabel, valueDepositInput, accountLabel, accountInput, passwordLabel, passwordInput, depositBtn);
+    form.append(depositLabel, valueDepositLabel, valueDepositInput, accountLabel, accountInput, depositBtn);
     operations.append(form);
     operationType = form.getAttribute("id");
     operationRow++;
@@ -197,21 +194,20 @@ function depositValue(event) {
 
   const valueDeposit = document.getElementById("valueDeposit");
   const account = document.getElementById("account");
-  const password = document.getElementById("password");
+  // const password = document.getElementById("password");
   // valueDeposit.value, account.value, password.value
 
   const confirmAccount = verificaConta(account.value);
-  const confirmPassword = verificaSenha(password.value);
+  // const confirmPassword = verificaSenha(password.value);
 
-  if (confirmAccount && confirmPassword) {
+  if (confirmAccount) {
     const accountIndex = retornaIndexAccount(account.value);
     clients[accountIndex].balance += parseFloat(valueDeposit.value);
-    alert(`Deposito de ${valueDeposit.value} realizado com sucesso`);
+    alert(`Depósito de ${valueDeposit.value} realizado com sucesso\nSaldo atual: ${clients[accountIndex].balance}`);
     valueDeposit.value = "";
     account.value = "";
-    password.value = "";
   } else {
-    alert("Conta ou senha inválida");
+    alert("Conta não encontrada!");
   }
 }
 function checkBalanceAccount(event) {
